@@ -6,6 +6,9 @@ import { bindActionCreators } from 'redux';
 import * as authActions from '../../actions/authActions';
 import LoginForm from '../../components/auth/LoginForm';
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import AppBar from 'material-ui/AppBar';
+
 class LoginPage extends Component {
   handleSubmit(credentials) {
     this.props.actions.login(credentials);
@@ -15,10 +18,14 @@ class LoginPage extends Component {
     const { message } = this.props;
     return (
       <div>
-        <h1>Login</h1>
-        <h2>{ message }</h2>
-        <LoginForm onSubmit={ this.handleSubmit.bind(this) } />
-        <Link to={'signup'}>Signup</Link>
+        <MuiThemeProvider>
+          <div>
+            <AppBar title="Login" />
+            <h2>{ message }</h2>
+            <LoginForm onSubmit={ this.handleSubmit.bind(this) } />
+            <Link to={'signup'}>Signup</Link>
+          </div>
+        </MuiThemeProvider>
       </div>
     );
   }
