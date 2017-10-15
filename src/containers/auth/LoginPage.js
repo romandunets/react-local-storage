@@ -8,9 +8,10 @@ import LoginForm from '../../components/auth/LoginForm';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
+import FlatButton from 'material-ui/FlatButton';
 
 class LoginPage extends Component {
-  handleSubmit(credentials) {
+  handleLogin(credentials) {
     this.props.actions.login(credentials);
   }
 
@@ -21,9 +22,12 @@ class LoginPage extends Component {
         <MuiThemeProvider>
           <div>
             <AppBar title="Login" />
-            <h2>{ message }</h2>
-            <LoginForm onSubmit={ this.handleSubmit.bind(this) } />
-            <Link to={'signup'}>Signup</Link>
+            <div className="text-center" >
+              <h1>Login</h1>
+              <h2>{ message }</h2>
+              <LoginForm handleLogin={ this.handleLogin.bind(this) } />
+              <FlatButton label="Signup" primary={true} href="/signup" />
+            </div>
           </div>
         </MuiThemeProvider>
       </div>
