@@ -5,8 +5,8 @@ import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 const styles = {
   radioButton: {
     marginBottom: 16,
-    textAlign: 'left',
-  },
+    textAlign: 'left'
+  }
 };
 
 const Question = ({ question }) => (
@@ -26,6 +26,5 @@ Question.propTypes = {
     MCA: PropTypes.arrayOf(PropTypes.string).isRequired
   }).isRequired
 }
-
 
 export default Question;
