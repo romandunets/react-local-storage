@@ -12,6 +12,8 @@ import UserPage from './containers/users/UserPage';
 import UserNewPage from './containers/users/UserNewPage';
 import UserEditPage from './containers/users/UserEditPage';
 
+import QuizPage from './containers/quiz/QuizPage';
+
 export default (store) => {
   return (
     <Route path="/">
@@ -28,6 +30,9 @@ export default (store) => {
           <Route path="new" component={UserNewPage} />
           <Route path=":id" component={UserPage} />
           <Route path=":id/edit" component={UserEditPage} />
+        </Route>
+        <Route path="quizes">
+          <IndexRoute component={QuizPage} />
         </Route>
       </Route>
     </Route>
