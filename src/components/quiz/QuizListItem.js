@@ -20,8 +20,8 @@ class QuizListItem extends Component {
 
 QuizListItem.propTypes = {
   quiz: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired
+    Id: PropTypes.number.isRequired,
+    Name: PropTypes.string.isRequired
   }).isRequired
 }
 

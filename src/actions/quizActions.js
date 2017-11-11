@@ -33,3 +33,34 @@ function listQuizesFailure(error) {
     payload: { error }
   }
 }
+
+export function getQuiz(id) {
+  return function(dispatch) {
+    dispatch(getQuizRequest());
+    quizApi.getQuiz(id)
+      .then(function (response) {
+        dispatch(getQuizSuccess(response.data));
+      })
+      .catch(function (error) {
+        dispatch(getQuizFailure(error));
+      });
+  }
+}
+
+function getQuizRequest() {
+  return { type: types.GET_QUIZ_REQUEST }
+}
+
+function getQuizSuccess(quiz) {
+  return {
+    type: types.GET_QUIZ_SUCCESS,
+    payload: { quiz }
+  }
+}
+
+function getQuizFailure(error) {
+  return {
+    type: types.GET_QUIZ_FAILURE,
+    payload: { error }
+  }
+}

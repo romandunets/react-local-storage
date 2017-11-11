@@ -5,16 +5,15 @@ import Question from './Question';
 
 const QuestionsList = ({ questions }) => {
   return (
-    <ul>{questions.map(question => <Question key={question.id} question={question} />)}</ul>
+    <ul>{questions.map(question => <Question key={question.Id} question={question} />)}</ul>
   );
 }
 
 QuestionsList.propTypes = {
   questions: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      question: PropTypes.string.isRequired,
-      MCA: PropTypes.arrayOf(PropTypes.string).isRequired
+      Id: PropTypes.number.isRequired,
+      QuestionText: PropTypes.string.isRequired
     }).isRequired
   ).isRequired
 }

@@ -9,6 +9,12 @@ const quizesReducer = (state = initialState.quizes, action) => {
       return {...state, quizes: action.payload.quizes}
     case types.LIST_QUIZES_FAILURE:
       return {...state, error: action.payload}
+    case types.GET_QUIZ_REQUEST:
+      return {...state, quiz: []}
+    case types.GET_QUIZ_SUCCESS:
+      return {...state, quiz: action.payload.quiz}
+    case types.GET_QUIZ_FAILURE:
+      return {...state, error: action.payload}
     default:
       return state;
   }

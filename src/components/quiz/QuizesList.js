@@ -9,7 +9,7 @@ class QuizesList extends Component {
     return (
       <Table selectable={false}>
         <TableBody displayRowCheckbox={false}>
-          {quizes.map(quiz => <QuizListItem key={quiz.id} quiz={quiz} />)}
+          {quizes.map(quiz => <QuizListItem key={quiz.Id} quiz={quiz} />)}
         </TableBody>
       </Table>
     );
@@ -19,8 +19,8 @@ class QuizesList extends Component {
 QuizesList.propTypes = {
   quizes: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired
+      Id: PropTypes.number.isRequired,
+      Name: PropTypes.string.isRequired
     }).isRequired
   ).isRequired
 }

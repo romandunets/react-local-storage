@@ -11,19 +11,18 @@ const styles = {
 
 const Question = ({ question }) => (
   <div>
-    <h3 >{question.question}</h3>    
-    <RadioButtonGroup name={question.question} defaultSelected={question.MCA[0]}>
-      {question.MCA.map(answer => <RadioButton key={answer} label={answer} 
-        value={answer} style={styles.radioButton}/>)}
+    <h3>{question.QuestionText}</h3>
+    <RadioButtonGroup name={question.QuestionText} defaultSelected={question.Choices[0].Id}>
+      {question.Choices.map(answer => <RadioButton key={answer.Id} label={answer.AnswerText}
+        value={answer.Id} style={styles.radioButton}/>)}
     </RadioButtonGroup>
   </div>
 )
 
 Question.propTypes = {
   question: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    question: PropTypes.string.isRequired,
-    MCA: PropTypes.arrayOf(PropTypes.string).isRequired
+    Id: PropTypes.number.isRequired,
+    QuestionText: PropTypes.string.isRequired
   }).isRequired
 }
 

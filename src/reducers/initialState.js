@@ -14,6 +14,7 @@ export default {
     message: ''
   },
   quizes: {
-    quizes: []
+    quizes: [],
+    quiz: []
   }
 }
