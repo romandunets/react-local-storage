@@ -34,7 +34,7 @@ const config = {
     ], path.resolve(__dirname, 'src')),
     new webpack.DefinePlugin({
       'process.env': {
-        'API_HOST': JSON.stringify('http://0.0.0.0:3001')
+        'API_HOST': JSON.stringify('https://portal.techclass.co')
       }
     }),
     new OfflinePlugin({
