@@ -5,14 +5,14 @@ import { browserHistory } from 'react-router';
 class QuizListItem extends Component {
 
   onCellClick(quiz) {
-    browserHistory.push(`/quizes/${quiz.id}`);
+    browserHistory.push(`/quizes/${quiz.Id}`);
   }
 
   render() {
     const { quiz } = this.props;
     return (
-      <TableRow id={quiz.id} onClick={ this.onCellClick.bind(this, quiz) }>
-        <TableRowColumn>{quiz.name}</TableRowColumn>
+      <TableRow id={quiz.Id} onClick={ this.onCellClick.bind(this, quiz) }>
+        <TableRowColumn>{quiz.Name}</TableRowColumn>
       </TableRow>
     );
   }

@@ -12,5 +12,8 @@ export default {
   auth: {
     isAuthenticated: false,
     message: ''
+  },
+  quizes: {
+    quizes: []
   }
 }

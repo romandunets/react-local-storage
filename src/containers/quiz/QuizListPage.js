@@ -1,23 +1,19 @@
 import React, { Component, PropTypes } from 'react';
-import QuizesList from '../../components/quiz/QuizesList'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-const quizes = [
-  {
-    id: 1,
-    name: '.NET'
-  }, {
-    id: 2,
-    name: 'Ruby on Rails'
-  }, {
-    id: 3,
-    name: 'Java EE'
-  }
-];
+import * as quizActions from '../../actions/quizActions'
+import QuizesList from '../../components/quiz/QuizesList'
 
 class QuizListPage extends Component {
 
+  componentWillMount() {
+    this.props.actions.listQuizes();
+  }
+
   render() {
+    const { quizes } = this.props;
     return (
       <div>
         <MuiThemeProvider>
@@ -28,4 +24,16 @@ class QuizListPage extends Component {
   }
 }
 
-export default QuizListPage;
+const mapStateToProps = (state) => {
+  return {
+    quizes: state.quizes.quizes
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(quizActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuizListPage);
