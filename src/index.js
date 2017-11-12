@@ -2,12 +2,12 @@ import React from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {Router, browserHistory} from 'react-router';
+import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 
 import configureStore from './store/configureStore.js';
 import routes from './routes.js';
 
 const store = configureStore();
-import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 OfflinePluginRuntime.install();
 
 OfflinePluginRuntime.install({
@@ -26,8 +26,6 @@ OfflinePluginRuntime.install({
       .reload();
   }
 });
-
-var rotation = 0;
 
 window.addEventListener('offline', function () {
   console.log('offline');
@@ -58,5 +56,6 @@ function closeOfflineReady() {
 
 render(
   <Provider store={store}>
-  <Router history={browserHistory} routes={routes(store)}/>
-</Provider>, document.getElementById('app'));
+    <Router history={browserHistory} routes={routes(store)}/>
+  </Provider>, document.getElementById('app')
+);

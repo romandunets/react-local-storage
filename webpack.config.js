@@ -6,7 +6,9 @@ const OfflinePlugin = require('offline-plugin');
 
 const config = {
   entry: [
-    'webpack/hot/dev-server', 'webpack/hot/only-dev-server', path.join(__dirname, '/src/index.js')
+    'webpack/hot/dev-server',
+    'webpack/hot/only-dev-server',
+    path.join(__dirname, '/src/index.js')
   ],
   devServer: {
     contentBase: 'src/public',
