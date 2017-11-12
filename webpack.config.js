@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const buildPath = path.resolve(__dirname, 'build');
 const TransferWebpackPlugin = require('transfer-webpack-plugin');
+const OfflinePlugin = require('offline-plugin');
 
 const config = {
   entry: [
@@ -27,30 +28,48 @@ const config = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new TransferWebpackPlugin([
-      {from: 'public'},
+      {
+        from: 'public'
+      }
     ], path.resolve(__dirname, 'src')),
     new webpack.DefinePlugin({
       'process.env': {
         'API_HOST': JSON.stringify('http://0.0.0.0:3001')
       }
+    }),
+    new OfflinePlugin({
+      safeToUseOptionalCaches: true,
+      caches: 'all',
+      ServiceWorker: {
+        events: true
+      },
+      AppCache: {
+        events: true
+      }
     })
   ],
   module: {
-    loaders: [{
-      test: /\.js$/,
-      loader: 'babel',
-      exclude: /node_modules/,
-      include: __dirname,
-      query: {
-        presets:['react', 'es2015'],
-        plugins: ['transform-object-rest-spread']
+    loaders: [
+      {
+        test: /\.js$/,
+        loader: 'babel',
+        exclude: /node_modules/,
+        include: __dirname,
+        query: {
+          presets: [
+            'react', 'es2015'
+          ],
+          plugins: ['transform-object-rest-spread']
+        }
+      }, {
+        test: /\.css?$/,
+        loaders: [
+          'style', 'raw'
+        ],
+        include: __dirname
       }
-    }, {
-      test: /\.css?$/,
-      loaders: [ 'style', 'raw' ],
-      include: __dirname
-    }]
-  },
+    ]
+  }
 };
 
 module.exports = config;
