@@ -22,7 +22,8 @@ const Question = ({ question }) => (
 Question.propTypes = {
   question: PropTypes.shape({
     Id: PropTypes.number.isRequired,
-    QuestionText: PropTypes.string.isRequired
+    QuestionText: PropTypes.string.isRequired,
+    Choices: PropTypes.array.isRequired
   }).isRequired
 }
 
