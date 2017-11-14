@@ -3,20 +3,25 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 
-import * as authActions from '../../actions/authActions';
-import QuizForm from '../../components/quiz/Quiz';
-
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 
+import * as quizActions from '../../actions/quizActions'
+import Quiz from '../../components/quiz/Quiz';
+
 class QuizPage extends Component {
-  handleLogin(credentials) {
-    this.props.actions.login(credentials);
+
+  componentWillMount() {
+    this.props.actions.getQuiz(this.props.params.id);
+  }
+
+  handleSubmit(credentials) {
+    // TODO: submit quiz
   }
 
   render() {
-    const { message } = this.props;
+    const { quiz } = this.props;
     return (
       <div>
         <MuiThemeProvider>
@@ -24,8 +29,7 @@ class QuizPage extends Component {
             {/* <AppBar title="Login" /> */}
             <div className="text-center" >
               <h1>Quiz Page</h1>
-              <QuizForm handleLogin={ this.handleLogin.bind(this) } />
-              <FlatButton label="Signup" primary={true} href="/signup" />
+              <Quiz quiz={ quiz } handleSubmit={ this.handleSubmit.bind(this) } />
             </div>
           </div>
         </MuiThemeProvider>
@@ -34,10 +38,16 @@ class QuizPage extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
   return {
-    actions: bindActionCreators(authActions, dispatch)
+    quiz: state.quizes.quiz
   }
 }
 
-export default connect(mapDispatchToProps)(QuizPage);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(quizActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuizPage);

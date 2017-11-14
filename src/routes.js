@@ -12,13 +12,14 @@ import UserPage from './containers/users/UserPage';
 import UserNewPage from './containers/users/UserNewPage';
 import UserEditPage from './containers/users/UserEditPage';
 
+import QuizListPage from './containers/quiz/QuizListPage';
 import QuizPage from './containers/quiz/QuizPage';
 
 export default (store) => {
   return (
     <Route path="/">
       <Route component={AppUnauthorized}>
-        <IndexRedirect to="/users" />
+        <IndexRedirect to="/quizes" />
 
         <Route path="login" component={LoginPage} />
         <Route path="signup" component={SignupPage} />
@@ -32,7 +33,8 @@ export default (store) => {
           <Route path=":id/edit" component={UserEditPage} />
         </Route>
         <Route path="quizes">
-          <IndexRoute component={QuizPage} />
+          <IndexRoute component={QuizListPage} />
+          <Route path=":id" component={QuizPage} />
         </Route>
       </Route>
     </Route>
