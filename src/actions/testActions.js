@@ -7,9 +7,13 @@ export function testLocalStorage() {
   	console.log("Testing started");
   	var results = {};
 
-  	results.insertLarge = insertLocalStorageTest(2000, 512);
-	results.insertMedium = insertLocalStorageTest(2000, 64);
-  	results.insertSmall = insertLocalStorageTest(2000, 8);
+    results.insertLarge = insertLocalStorageTest(2000, 512);
+    results.insertMedium = insertLocalStorageTest(2000, 64);
+    results.insertSmall = insertLocalStorageTest(2000, 8);
+
+    results.massInsertLarge = massInsertLocalStorageTest(2000, 512);
+    results.massInsertMedium = massInsertLocalStorageTest(2000, 64);
+    results.massInsertSmall = massInsertLocalStorageTest(2000, 8);
 
   	results.clear = clearLocalStorageTest(2000, 512);
   	
@@ -25,6 +29,16 @@ function insertLocalStorageTest(numberOfBlocks, sizeOfBlocks) {
   for (var i = 0; i < numberOfBlocks; i++) {
     localStorage.setItem(i, data[i]);
   }
+  var end = new Date().getTime();
+
+  return end - start;
+}
+
+function massInsertLocalStorageTest(numberOfBlocks, sizeOfBlocks) {
+  var data = getRandomData(numberOfBlocks, sizeOfBlocks);
+
+  var start = new Date().getTime();
+  localStorage.setItem("data", data);
   var end = new Date().getTime();
 
   return end - start;
