@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
@@ -16,6 +17,7 @@ class TestPage extends Component {
 
   render() {
     const { results } = this.props;
+    if (results !== undefined)
     console.log(results);
 
     return (
@@ -24,7 +26,29 @@ class TestPage extends Component {
           <div>
             <div className="text-center" >
               <FlatButton label="Test it!" fullWidth={true} onClick={this.handleTest.bind(this)}/>
-              <div>Test results here</div>
+              {results.length > 0 && results.map(result =>
+                <div key={results.indexOf(result)}>
+                  <h2>{result.description}</h2>
+                  <Table selectable={false}>
+                    <TableHeader displaySelectAll={false}>
+                      <TableRow>
+                        <TableHeaderColumn>Technology</TableHeaderColumn>
+                        {result.headers.map(numberOfBytes =>
+                          <TableHeaderColumn key={result.headers.indexOf(numberOfBytes)}>{numberOfBytes} bytes</TableHeaderColumn>
+                        )}
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody displayRowCheckbox={false}>
+                      <TableRow>
+                        <TableRowColumn>Local storage</TableRowColumn>
+                        {result.data.map(value =>
+                          <TableRowColumn key={result.data.indexOf(value)}>{value} ms</TableRowColumn>
+                        )}
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
             </div>
           </div>
         </MuiThemeProvider>

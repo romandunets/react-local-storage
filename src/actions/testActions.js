@@ -1,6 +1,8 @@
 import { browserHistory } from 'react-router';
 
 import * as types from '../actions/actionTypes';
+import * as dataGenerator from '../helpers/dataGenerator';
+import Timer from '../helpers/timer';
 
 export function testLocalStorage() {
   return function(dispatch) {
@@ -10,109 +12,84 @@ export function testLocalStorage() {
 }
 
 function testOfflineStorage() {
-  var results = {};
+  var results = [];
 
-  results.insertLarge = insertLocalStorageTest(2000, 512);
-  results.insertMedium = insertLocalStorageTest(2000, 64);
-  results.insertSmall = insertLocalStorageTest(2000, 8);
-
-  results.massInsertLarge = massInsertLocalStorageTest(2000, 512);
-  results.massInsertMedium = massInsertLocalStorageTest(2000, 64);
-  results.massInsertSmall = massInsertLocalStorageTest(2000, 8);
-
-  results.fetchLarge = fetchLocalStorageTest(2000, 512);
-  results.fetchMedium = fetchLocalStorageTest(2000, 64);
-  results.fetchSmall = fetchLocalStorageTest(2000, 8);
-
-  results.clearLarge = clearLocalStorageTest(2000, 512);
-  results.clearMedium = clearLocalStorageTest(2000, 64);
-  results.clearSmall = clearLocalStorageTest(2000, 8);
-
-  results.massClearLarge = massClearLocalStorageTest(2000, 512);
-  results.massClearMedium = massClearLocalStorageTest(2000, 64);
-  results.massClearSmall = massClearLocalStorageTest(2000, 8);
+  results.push(benchmark(insertOfflineStorageTest, "Insert one by one", [2000], [512, 64, 8]));
+  results.push(benchmark(massInsertOfflineStorageTest, "Mass insert", [2000], [512, 64, 8]));
+  results.push(benchmark(fetchOfflineStorageTest, "Fetch one by one", [2000], [512, 64, 8]));
+  results.push(benchmark(clearOfflineStorageTest, "Clear one by one", [2000], [512, 64, 8]));
+  results.push(benchmark(massClearOfflineStorageTest, "Mass clear", [2000], [512, 64, 8]));
 
   return results;
 }
 
-function insertLocalStorageTest(numberOfBlocks, sizeOfBlocks) {
+function benchmark(handler, description, numbersOfBlocks, sizesOfBlocks) {
+  var results = {
+    description: description + " " + numbersOfBlocks + " blocks of data",
+    headers: sizesOfBlocks,
+    data:[]
+  };
+
+  for (let numberOfBlock of numbersOfBlocks) {
+    for (let sizeOfBlocks of sizesOfBlocks) {
+      results.data.push(handler(numberOfBlock, sizeOfBlocks));
+    }
+  }
+
+  return results;
+}
+
+function insertOfflineStorageTest(numberOfBlocks, sizeOfBlocks) {
   localStorage.clear();
-  var data = getRandomData(numberOfBlocks, sizeOfBlocks);
-  
-  var start = window.performance.now();
+  var data = dataGenerator.getRandomData(numberOfBlocks, sizeOfBlocks);
+
+  let timer = new Timer();
   insertData(data);
-  var end = window.performance.now();
-
-  return end - start;
+  return timer.getTimeElapsed();
 }
 
-function massInsertLocalStorageTest(numberOfBlocks, sizeOfBlocks) {
+function massInsertOfflineStorageTest(numberOfBlocks, sizeOfBlocks) {
   localStorage.clear();
-  var data = getRandomData(numberOfBlocks, sizeOfBlocks);
+  var data = dataGenerator.getRandomData(numberOfBlocks, sizeOfBlocks);
 
-  var start = window.performance.now();
+  let timer = new Timer();
   localStorage.setItem("data", data);
-  var end = window.performance.now();
-
-  return end - start;
+  return timer.getTimeElapsed();
 }
 
-function fetchLocalStorageTest(numberOfBlocks, sizeOfBlocks) {
+function fetchOfflineStorageTest(numberOfBlocks, sizeOfBlocks) {
   localStorage.clear();
-  insertData(getRandomData(numberOfBlocks, sizeOfBlocks));
+  insertData(dataGenerator.getRandomData(numberOfBlocks, sizeOfBlocks));
 
-  var start = window.performance.now();
-  for (var i = 0; i < numberOfBlocks; i++) {
+  let timer = new Timer();
+  for (var i = 0; i < numberOfBlocks.length; i++) {
     localStorage.getItem(i);
   }
-  var end = window.performance.now();
-
-  return end - start;
+  return timer.getTimeElapsed();
 }
 
-function clearLocalStorageTest(numberOfBlocks, sizeOfBlocks) {
+function clearOfflineStorageTest(numberOfBlocks, sizeOfBlocks) {
   localStorage.clear();
-  insertData(getRandomData(numberOfBlocks, sizeOfBlocks));
+  insertData(dataGenerator.getRandomData(numberOfBlocks, sizeOfBlocks));
 
-  var start = window.performance.now();
+  let timer = new Timer();
   for (var i = 0; i < numberOfBlocks; i++) {
     localStorage.removeItem(i);
   }
-  var end = window.performance.now();
-
-  return end - start;
+  return timer.getTimeElapsed();
 }
 
-function massClearLocalStorageTest(numberOfBlocks, sizeOfBlocks) {
+function massClearOfflineStorageTest(numberOfBlocks, sizeOfBlocks) {
   localStorage.clear();
-  insertData(getRandomData(numberOfBlocks, sizeOfBlocks));
+  insertData(dataGenerator.getRandomData(numberOfBlocks, sizeOfBlocks));
 
-  var start = window.performance.now();
+  let timer = new Timer();
   localStorage.clear();
-  var end = window.performance.now();
-
-  return end - start;
+  return timer.getTimeElapsed();
 }
 
 function insertData(data) {
   for (var i = 0; i < data.length; i++) {
     localStorage.setItem(i, data[i]);
   }
-}
-
-function getRandomData(numberOfBlocks, sizeOfBlocks) {
-  var data = [];
-  for (var i = 0; i < numberOfBlocks; i++) {
-    data[i] = generateRandomString(sizeOfBlocks);
-  }
-  return data;
-}
-
-function generateRandomString(length) {
-  var text = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for(var i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
 }

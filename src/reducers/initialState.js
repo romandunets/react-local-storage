@@ -18,6 +18,6 @@ export default {
     quiz: []
   },
   test: {
-    results: {}
+    results: []
   }
 }
