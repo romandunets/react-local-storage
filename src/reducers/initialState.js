@@ -16,5 +16,8 @@ export default {
   quizes: {
     quizes: [],
     quiz: []
+  },
+  test: {
+    results: {}
   }
 }

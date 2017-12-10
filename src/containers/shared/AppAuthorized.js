@@ -19,7 +19,7 @@ class AppAuthorized extends Component {
         <div>
           <MuiThemeProvider>
             <div>
-              <AppBar title="Courses" />
+              <AppBar title="Quizes" />
             </div>
           </MuiThemeProvider>
           {/* <h2>React + Redux Skeleton</h2>
