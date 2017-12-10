@@ -13,27 +13,33 @@ export function testLocalStorage() {
 
 function testOfflineStorage() {
   var results = [];
+  var numbersOfBlocks = [50, 400, 2000];
+  var sizesOfBlocks = [8, 64, 512];
 
-  results.push(benchmark(insertOfflineStorageTest, "Insert one by one", [2000], [512, 64, 8]));
-  results.push(benchmark(massInsertOfflineStorageTest, "Mass insert", [2000], [512, 64, 8]));
-  results.push(benchmark(fetchOfflineStorageTest, "Fetch one by one", [2000], [512, 64, 8]));
-  results.push(benchmark(clearOfflineStorageTest, "Clear one by one", [2000], [512, 64, 8]));
-  results.push(benchmark(massClearOfflineStorageTest, "Mass clear", [2000], [512, 64, 8]));
+  results.push(benchmark(insertOfflineStorageTest, "Insert one by one blocks of data", numbersOfBlocks, sizesOfBlocks));
+  results.push(benchmark(massInsertOfflineStorageTest, "Mass insert of single data block", numbersOfBlocks, sizesOfBlocks));
+  results.push(benchmark(fetchOfflineStorageTest, "Fetch one by one blocks of data", numbersOfBlocks, sizesOfBlocks));
+  results.push(benchmark(massFetchOfflineStorageTest, "Mass fetch of single data block", numbersOfBlocks, sizesOfBlocks));
+  results.push(benchmark(clearOfflineStorageTest, "Clear one by one blocks of data", numbersOfBlocks, sizesOfBlocks));
+  results.push(benchmark(massClearOfflineStorageTest, "Mass clear of single data block", numbersOfBlocks, sizesOfBlocks));
 
   return results;
 }
 
 function benchmark(handler, description, numbersOfBlocks, sizesOfBlocks) {
   var results = {
-    description: description + " " + numbersOfBlocks + " blocks of data",
+    description: description,
     headers: sizesOfBlocks,
+    columns: numbersOfBlocks,
     data:[]
   };
 
   for (let numberOfBlock of numbersOfBlocks) {
+    var dataPerNumberOfBlocks = [];
     for (let sizeOfBlocks of sizesOfBlocks) {
-      results.data.push(handler(numberOfBlock, sizeOfBlocks));
+      dataPerNumberOfBlocks.push(handler(numberOfBlock, sizeOfBlocks));
     }
+    results.data.push(dataPerNumberOfBlocks);
   }
 
   return results;
@@ -65,6 +71,15 @@ function fetchOfflineStorageTest(numberOfBlocks, sizeOfBlocks) {
   for (var i = 0; i < numberOfBlocks.length; i++) {
     localStorage.getItem(i);
   }
+  return timer.getTimeElapsed();
+}
+
+function massFetchOfflineStorageTest(numberOfBlocks, sizeOfBlocks) {
+  localStorage.clear();
+  localStorage.setItem("data", dataGenerator.getRandomData(numberOfBlocks, sizeOfBlocks));
+
+  let timer = new Timer();
+  localStorage.getItem("data");
   return timer.getTimeElapsed();
 }
 

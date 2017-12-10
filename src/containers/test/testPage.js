@@ -32,19 +32,21 @@ class TestPage extends Component {
                   <Table selectable={false}>
                     <TableHeader displaySelectAll={false}>
                       <TableRow>
-                        <TableHeaderColumn>Technology</TableHeaderColumn>
+                        <TableHeaderColumn>Number of blocks</TableHeaderColumn>
                         {result.headers.map(numberOfBytes =>
                           <TableHeaderColumn key={result.headers.indexOf(numberOfBytes)}>{numberOfBytes} bytes</TableHeaderColumn>
                         )}
                       </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false}>
-                      <TableRow>
-                        <TableRowColumn>Local storage</TableRowColumn>
-                        {result.data.map(value =>
-                          <TableRowColumn key={result.data.indexOf(value)}>{value} ms</TableRowColumn>
-                        )}
-                      </TableRow>
+                      {result.data.map(valuesPerNumberOfBlocks =>
+                        <TableRow key={result.data.indexOf(valuesPerNumberOfBlocks)}>
+                          <TableRowColumn>{result.columns[result.data.indexOf(valuesPerNumberOfBlocks)]}</TableRowColumn>
+                          {valuesPerNumberOfBlocks.map(value =>
+                            <TableRowColumn key={result.data.indexOf(value)}>{value} ms</TableRowColumn>
+                          )}
+                        </TableRow>
+                      )}
                     </TableBody>
                   </Table>
                 </div>
