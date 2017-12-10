@@ -5,7 +5,6 @@ import * as types from '../actions/actionTypes';
 export function testLocalStorage() {
   return function(dispatch) {
     const results = testOfflineStorage();
-    console.log(results);
     dispatch({ type: types.TEST_LOCAL_STORAGE, payload: { results: results } });
   }
 }
@@ -25,7 +24,13 @@ function testOfflineStorage() {
   results.fetchMedium = fetchLocalStorageTest(2000, 64);
   results.fetchSmall = fetchLocalStorageTest(2000, 8);
 
-  results.clear = clearLocalStorageTest(2000, 512);
+  results.clearLarge = clearLocalStorageTest(2000, 512);
+  results.clearMedium = clearLocalStorageTest(2000, 64);
+  results.clearSmall = clearLocalStorageTest(2000, 8);
+
+  results.massClearLarge = massClearLocalStorageTest(2000, 512);
+  results.massClearMedium = massClearLocalStorageTest(2000, 64);
+  results.massClearSmall = massClearLocalStorageTest(2000, 8);
 
   return results;
 }
@@ -69,11 +74,22 @@ function clearLocalStorageTest(numberOfBlocks, sizeOfBlocks) {
   localStorage.clear();
   insertData(getRandomData(numberOfBlocks, sizeOfBlocks));
 
-  var start = new Date().getTime();
+  var start = window.performance.now();
   for (var i = 0; i < numberOfBlocks; i++) {
     localStorage.removeItem(i);
   }
-  var end = new Date().getTime();
+  var end = window.performance.now();
+
+  return end - start;
+}
+
+function massClearLocalStorageTest(numberOfBlocks, sizeOfBlocks) {
+  localStorage.clear();
+  insertData(getRandomData(numberOfBlocks, sizeOfBlocks));
+
+  var start = window.performance.now();
+  localStorage.clear();
+  var end = window.performance.now();
 
   return end - start;
 }

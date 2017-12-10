@@ -15,12 +15,16 @@ class TestPage extends Component {
   }
 
   render() {
+    const { results } = this.props;
+    console.log(results);
+
     return (
       <div>
         <MuiThemeProvider>
           <div>
             <div className="text-center" >
               <FlatButton label="Test it!" fullWidth={true} onClick={this.handleTest.bind(this)}/>
+              <div>Test results here</div>
             </div>
           </div>
         </MuiThemeProvider>
@@ -31,7 +35,7 @@ class TestPage extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    test: state.test.results
+    results: state.test.results
   }
 }
 
