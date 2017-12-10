@@ -14,3 +14,15 @@ export function generateRandomString(length) {
   }
   return text;
 }
+
+export function getRandomSetOfKeys(number) {
+  var keys = [];
+  for (var i = 0; i < number; i++) {
+    keys[i] = getRandomNumber(0, number);
+  }
+  return keys;
+}
+
+export function getRandomNumber(min, max) {
+  return Math.round(Math.random() * (max - min) + min);
+}

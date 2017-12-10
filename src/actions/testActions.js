@@ -18,7 +18,7 @@ function testOfflineStorage() {
 
   results.push(benchmark(insertOfflineStorageTest, "Insert one by one blocks of data", numbersOfBlocks, sizesOfBlocks));
   results.push(benchmark(massInsertOfflineStorageTest, "Mass insert of single data block", numbersOfBlocks, sizesOfBlocks));
-  results.push(benchmark(fetchOfflineStorageTest, "Fetch one by one blocks of data", numbersOfBlocks, sizesOfBlocks));
+  results.push(benchmark(fetchOfflineStorageTest, "Fetch one by one blocks of data in random order", numbersOfBlocks, sizesOfBlocks));
   results.push(benchmark(massFetchOfflineStorageTest, "Mass fetch of single data block", numbersOfBlocks, sizesOfBlocks));
   results.push(benchmark(clearOfflineStorageTest, "Clear one by one blocks of data", numbersOfBlocks, sizesOfBlocks));
   results.push(benchmark(massClearOfflineStorageTest, "Mass clear of single data block", numbersOfBlocks, sizesOfBlocks));
@@ -66,10 +66,12 @@ function massInsertOfflineStorageTest(numberOfBlocks, sizeOfBlocks) {
 function fetchOfflineStorageTest(numberOfBlocks, sizeOfBlocks) {
   localStorage.clear();
   insertData(dataGenerator.getRandomData(numberOfBlocks, sizeOfBlocks));
+  const keys = dataGenerator.getRandomSetOfKeys(numberOfBlocks);
+  console.log(keys);
 
   let timer = new Timer();
-  for (var i = 0; i < numberOfBlocks.length; i++) {
-    localStorage.getItem(i);
+  for (var i = 0; i < keys.length; i++) {
+    localStorage.getItem(keys[i]);
   }
   return timer.getTimeElapsed();
 }
