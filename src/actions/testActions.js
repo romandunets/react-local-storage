@@ -13,20 +13,21 @@ export function testLocalStorage() {
 
 function testOfflineStorage() {
   var results = [];
-  var numbersOfBlocks = [50, 400, 2000];
-  var sizesOfBlocks = [8, 64, 512];
+  var numbersOfBlocks = [100, 200, 300, 400, 500];
+  var sizesOfBlocks = [128, 256, 384, 512];
+  var numberOfRounds = 10;
 
-  results.push(benchmark(insertOfflineStorageTest, "Insert one by one blocks of data", numbersOfBlocks, sizesOfBlocks));
-  results.push(benchmark(massInsertOfflineStorageTest, "Mass insert of single data block", numbersOfBlocks, sizesOfBlocks));
-  results.push(benchmark(fetchOfflineStorageTest, "Fetch one by one blocks of data in random order", numbersOfBlocks, sizesOfBlocks));
-  results.push(benchmark(massFetchOfflineStorageTest, "Mass fetch of single data block", numbersOfBlocks, sizesOfBlocks));
-  results.push(benchmark(clearOfflineStorageTest, "Clear one by one blocks of data", numbersOfBlocks, sizesOfBlocks));
-  results.push(benchmark(massClearOfflineStorageTest, "Mass clear of single data block", numbersOfBlocks, sizesOfBlocks));
+  results.push(benchmark(insertOfflineStorageTest, "Insert one by one blocks of data", numbersOfBlocks, sizesOfBlocks, numberOfRounds));
+  results.push(benchmark(massInsertOfflineStorageTest, "Mass insert of single data block", numbersOfBlocks, sizesOfBlocks, numberOfRounds));
+  results.push(benchmark(fetchOfflineStorageTest, "Fetch one by one blocks of data in random order", numbersOfBlocks, sizesOfBlocks, numberOfRounds));
+  results.push(benchmark(massFetchOfflineStorageTest, "Mass fetch of single data block", numbersOfBlocks, sizesOfBlocks, numberOfRounds));
+  results.push(benchmark(clearOfflineStorageTest, "Clear one by one blocks of data", numbersOfBlocks, sizesOfBlocks, numberOfRounds));
+  results.push(benchmark(massClearOfflineStorageTest, "Mass clear of single data block", numbersOfBlocks, sizesOfBlocks, numberOfRounds));
 
   return results;
 }
 
-function benchmark(handler, description, numbersOfBlocks, sizesOfBlocks) {
+function benchmark(handler, description, numbersOfBlocks, sizesOfBlocks, numberOfRounds) {
   var results = {
     description: description,
     headers: sizesOfBlocks,
@@ -37,7 +38,12 @@ function benchmark(handler, description, numbersOfBlocks, sizesOfBlocks) {
   for (let numberOfBlock of numbersOfBlocks) {
     var dataPerNumberOfBlocks = [];
     for (let sizeOfBlocks of sizesOfBlocks) {
-      dataPerNumberOfBlocks.push(handler(numberOfBlock, sizeOfBlocks));
+      var sum = 0;
+      for (var i = 0; i < numberOfRounds; i++) {
+        sum += handler(numberOfBlock, sizeOfBlocks);
+      }
+      var average = sum / numberOfRounds;
+      dataPerNumberOfBlocks.push(average.toFixed(2) + " ms (" + (average / numberOfBlock * 1000).toFixed(1) + " us / op)");
     }
     results.data.push(dataPerNumberOfBlocks);
   }
@@ -67,7 +73,6 @@ function fetchOfflineStorageTest(numberOfBlocks, sizeOfBlocks) {
   localStorage.clear();
   insertData(dataGenerator.getRandomData(numberOfBlocks, sizeOfBlocks));
   const keys = dataGenerator.getRandomSetOfKeys(numberOfBlocks);
-  console.log(keys);
 
   let timer = new Timer();
   for (var i = 0; i < keys.length; i++) {

@@ -43,7 +43,7 @@ class TestPage extends Component {
                         <TableRow key={result.data.indexOf(valuesPerNumberOfBlocks)}>
                           <TableRowColumn>{result.columns[result.data.indexOf(valuesPerNumberOfBlocks)]}</TableRowColumn>
                           {valuesPerNumberOfBlocks.map(value =>
-                            <TableRowColumn key={result.data.indexOf(value)}>{value} ms</TableRowColumn>
+                            <TableRowColumn key={result.data.indexOf(value)}>{value}</TableRowColumn>
                           )}
                         </TableRow>
                       )}

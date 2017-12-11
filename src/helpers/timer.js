@@ -6,6 +6,6 @@ export default class Timer {
   }
 
   getTimeElapsed() {
-  	return (window.performance.now() - this.startTime).toFixed(2);
+  	return window.performance.now() - this.startTime;
   }
 }
